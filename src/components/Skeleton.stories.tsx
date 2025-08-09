@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Skeleton, SkeletonText, SkeletonCard, SkeletonSpinner, SkeletonButton, SkeletonAvatar } from './Skeleton';
+import { Skeleton, SkeletonText, SkeletonCard, SkeletonSpinner } from './Skeleton';
 
 const meta: Meta<typeof Skeleton> = {
   title: 'Components/Skeleton',
@@ -87,34 +87,13 @@ export const SpinnerLarge: StoryObj<typeof SkeletonSpinner> = {
 };
 
 
-// Skeleton Avatar Stories
-export const AvatarSmall: StoryObj<typeof SkeletonAvatar> = {
-  render: (args) => <SkeletonAvatar {...args} />,
-  args: {
-    size: 32,
-  },
-};
 
-export const AvatarMedium: StoryObj<typeof SkeletonAvatar> = {
-  render: (args) => <SkeletonAvatar {...args} />,
-  args: {
-    size: 48,
-  },
-};
-
-export const AvatarLarge: StoryObj<typeof SkeletonAvatar> = {
-  render: (args) => <SkeletonAvatar {...args} />,
-  args: {
-    size: 64,
-  },
-};
 
 // Combined Example
-export const CombinedExample: Story = {
+export const CombinedExample = {
   render: () => (
-    <div className="space-y-4 w-80">
+    <div className="space-y-4 p-4">
       <div className="flex items-center space-x-3">
-        <SkeletonAvatar size={40} />
         <div className="flex-1">
           <SkeletonText lines={2} />
         </div>
@@ -123,17 +102,15 @@ export const CombinedExample: Story = {
       <div className="flex justify-center">
         <SkeletonSpinner size="lg" />
       </div>
-      <SkeletonButton />
     </div>
   ),
 };
 
 // Dark Mode Example
-export const DarkMode: Story = {
+export const DarkModeExample = {
   render: () => (
-    <div className="dark bg-gray-900 p-6 space-y-4 w-80">
+    <div className="dark bg-gray-800 p-4 space-y-4">
       <div className="flex items-center space-x-3">
-        <SkeletonAvatar size={40} />
         <div className="flex-1">
           <SkeletonText lines={2} />
         </div>
@@ -142,7 +119,6 @@ export const DarkMode: Story = {
       <div className="flex justify-center">
         <SkeletonSpinner size="lg" />
       </div>
-      <SkeletonButton />
     </div>
   ),
 };

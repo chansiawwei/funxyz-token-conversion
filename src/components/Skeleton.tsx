@@ -91,23 +91,3 @@ export const SkeletonSpinner = ({
     <div className={`animate-spin rounded-full border-b-2 border-blue-600 dark:border-blue-400 ${sizeClasses[size]} ${className}`} />
   );
 };
-
-export const SkeletonButton = ({ className = '' }: { className?: string }) => {
-  return (
-      <Skeleton className={`h-10 w-full rounded-lg ${className}`} width="100%" height="2.5rem" />
-    );
-};
-
-export const SkeletonAvatar = ({ 
-  size = 24, 
-  className = '' 
-}: { size?: number; className?: string }) => {
-  return (
-      <Skeleton 
-        className={`rounded-full ${className}`}
-        width={`${size}px`}
-        height={`${size}px`}
-        rounded={true}
-      />
-    );
-};

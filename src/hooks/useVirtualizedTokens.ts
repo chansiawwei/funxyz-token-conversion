@@ -1,4 +1,4 @@
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
 import { TOKEN_CONFIGS, TOKEN_ICONS, Token, SUPPORTED_CHAINS } from '../types';
 import { getAssetErc20ByChainAndSymbol } from '@funkit/api-base';
