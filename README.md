@@ -66,6 +66,19 @@ npm run build
 npm run preview
 ```
 
+## 📚 Storybook
+
+This project includes Storybook for component development, testing, and documentation.
+
+### Quick Start
+
+```bash
+# Start Storybook development server (requires Node.js 20+)
+npm run storybook
+
+# Build Storybook for production
+npm run build-storybook
+```
 ## 🚀 Deployment
 
 ### Deploy to Vercel

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback, memo } from 'react';
 import { ArrowLeftRight, ArrowUpDown, Loader2 } from 'lucide-react';
 import { VirtualizedTokenSelector } from './VirtualizedTokenSelector';
+import { SelectedTokenDisplay } from './SelectedTokenDisplay';
 import { SkeletonCard, SkeletonSpinner } from './Skeleton';
 import { Token } from '../types';
 import { useImprovedSwapCalculation, formatTokenAmount } from '../hooks/useImprovedSwapCalculation';
@@ -223,6 +224,12 @@ export const SwapInterface = () => {
               />
             </div>
           </div>
+        </div>
+
+        {/* Selected Token Displays */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <SelectedTokenDisplay selectedToken={sourceToken} title="Source Token" />
+          <SelectedTokenDisplay selectedToken={targetToken} title="Target Token" />
         </div>
 
         {/* Results */}
