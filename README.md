@@ -1,6 +1,6 @@
 # Crypto Token Swap Interface
 
-A React-based web application that allows users to explore potential crypto token swaps by entering a USD amount and selecting two tokens to see their equivalent values.
+A React-based web application that allows users to explore potential crypto token explorer by entering a USD amount and selecting two tokens to see their equivalent values.
 
 ## 🚀 Live Demo
 
@@ -12,7 +12,7 @@ A React-based web application that allows users to explore potential crypto toke
 - **Multi-chain Support**: Supports tokens across Ethereum, Polygon, and Base networks
 - **Real-time Price Calculation**: Get live token prices using the Funkit API
 - **USD-based Conversion**: Enter a USD amount to see equivalent token values
-- **Swap Preview**: Visual representation of token swap calculations
+- **Swap Preview**: Visual representation of token price calculations
 - **Responsive Design**: Modern, mobile-friendly interface with sticky footer
 - **Virtualized Token Selection**: Efficient rendering of large token lists with pagination
 - **Dynamic Token Fetching**: Token information fetched from Funkit API in real-time

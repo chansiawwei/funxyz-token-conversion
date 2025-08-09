@@ -128,7 +128,7 @@ export const SwapInterface = () => {
     <div className="w-full max-w-2xl mx-auto px-4 sm:px-6">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 md:p-8 transition-colors duration-200">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Token Swap</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Token Explorer</h2>
           <p className="text-gray-600 dark:text-gray-300">Enter a USD amount to see equivalent token values</p>
         </div>
 

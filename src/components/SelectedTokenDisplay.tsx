@@ -15,7 +15,7 @@ export const SelectedTokenDisplay: React.FC<SelectedTokenDisplayProps> = ({
   }
 
   return (
-    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:outline hover:outline-2 hover:outline-blue-500 hover:outline-offset-2 hover:shadow-lg hover:bg-gray-100 dark:hover:bg-gray-750 cursor-pointer">
       <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{title}</h3>
       <div className="flex items-start space-x-4">
         {selectedToken.logoURI && (

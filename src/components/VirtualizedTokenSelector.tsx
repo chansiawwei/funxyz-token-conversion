@@ -286,7 +286,7 @@ export const VirtualizedTokenSelector = ({
               ) : (
                 <div className="max-h-60">
                   <List
-                    height={Math.min(240, allFilteredTokens.length * 60)} // Max 240px or actual content height
+                    height={Math.min(180, allFilteredTokens.length * 60)} // Max 200px or actual content height
                     width="100%"
                     itemCount={allFilteredTokens.length}
                     itemSize={60}
