@@ -4,7 +4,7 @@ A React-based web application that allows users to explore potential crypto toke
 
 ## 🚀 Live Demo
 
-[Deployed Application URL] - *Will be updated after deployment*
+**Preview URL**: [https://funxyz-token-conversion.vercel.app/](https://funxyz-token-conversion.vercel.app/)
 
 ## 📋 Features
 
@@ -65,6 +65,32 @@ A React-based web application that allows users to explore potential crypto toke
 npm run build
 npm run preview
 ```
+
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+This project is configured for seamless deployment on Vercel with the following setup:
+
+#### Prerequisites
+- Vercel CLI installed: `npm i -g vercel`
+- GitHub repository connected to Vercel
+
+#### Manual Deployment
+
+1. **Install dependencies with pnpm**
+   ```bash
+   pnpm install
+   ```
+
+2. **Deploy to Vercel**
+   ```bash
+   vercel --prod
+   ```
+
+#### Automatic Deployments
+
+- **Production**: Automatically deploys from `main` branch
 
 ## 🎯 Usage
 

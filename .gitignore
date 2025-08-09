@@ -83,3 +83,15 @@ dist
 tmp/
 temp/
 .vercel
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Package manager lock files (keep one based on preference)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
