@@ -155,7 +155,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
       <div className="mb-3">
         <Listbox value={networkFilter} onChange={handleNetworkFilterChange}>
           <div className="relative">
-            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm border border-gray-300">
+            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm border border-gray-300 min-w-0">
               <span className="block truncate">
                 {networkFilter 
                   ? SUPPORTED_CHAINS.find(chain => chain.id === networkFilter)?.name || 'Unknown Network'
@@ -230,7 +230,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
       {/* Token Selector */}
       <Listbox value={selectedToken} onChange={onTokenSelect}>
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm border border-gray-300 min-h-[76px] flex items-center">
+          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm border border-gray-300 min-h-[76px] flex items-center min-w-0">
             {selectedToken ? (
               <div className="flex items-center w-full">
                 {selectedToken.logoURI && (
@@ -265,7 +265,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute z-10 mt-1 w-full overflow-hidden rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options className="absolute z-10 mt-1 w-full max-w-full overflow-hidden rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm left-0 right-0">
               {isLoading ? (
                 <div className="px-4 py-8 text-center text-gray-500">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>

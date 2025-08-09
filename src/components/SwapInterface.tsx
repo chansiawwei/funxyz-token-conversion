@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, memo } from 'react';
-import { ArrowLeftRight, Loader2 } from 'lucide-react';
+import { ArrowLeftRight, ArrowUpDown, Loader2 } from 'lucide-react';
 import { VirtualizedTokenSelector } from './VirtualizedTokenSelector';
 import { Token } from '../types';
 import { useImprovedSwapCalculation, formatTokenAmount } from '../hooks/useImprovedSwapCalculation';
@@ -142,8 +142,8 @@ export const SwapInterface: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="card">
+    <div className="w-full max-w-2xl mx-auto px-4 sm:px-6">
+      <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Token Swap</h2>
           <p className="text-gray-600">Enter a USD amount to see equivalent token values</p>
@@ -165,44 +165,81 @@ export const SwapInterface: React.FC = () => {
               value={usdAmount}
               onChange={handleUsdAmountChange}
               placeholder="0.00"
-              className="input-field pl-8"
+              className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg min-w-0"
               min="0"
               step="0.01"
             />
           </div>
         </div>
 
-        {/* Token Selection Row */}
-        <div className="flex items-end gap-4 mb-6">
-          {/* Source Token */}
-          <div className="flex-1">
-            <VirtualizedTokenSelector
-              selectedToken={sourceToken}
-              onTokenSelect={handleSourceTokenSelect}
-              label="Source Token"
-              excludeToken={targetToken}
-            />
+        {/* Token Selection - Responsive Layout */}
+        <div className="space-y-4 md:space-y-0 mb-6">
+          {/* Desktop Layout */}
+          <div className="hidden md:flex items-end gap-4">
+            {/* Source Token */}
+            <div className="flex-1">
+              <VirtualizedTokenSelector
+                selectedToken={sourceToken}
+                onTokenSelect={handleSourceTokenSelect}
+                label="Source Token"
+                excludeToken={targetToken}
+              />
+            </div>
+
+            {/* Swap Button */}
+            <div className="flex justify-center items-end">
+              <button
+                onClick={handleSwapTokens}
+                className="p-3 rounded-full border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50 transition-colors mb-[2px]"
+                disabled={!sourceToken || !targetToken}
+              >
+                <ArrowLeftRight className="w-5 h-5 text-gray-600" />
+              </button>
+            </div>
+
+            {/* Target Token */}
+            <div className="flex-1">
+              <VirtualizedTokenSelector
+                selectedToken={targetToken}
+                onTokenSelect={handleTargetTokenSelect}
+                label="Target Token"
+                excludeToken={sourceToken}
+              />
+            </div>
           </div>
 
-          {/* Swap Button */}
-          <div className="flex justify-center items-end">
-            <button
-              onClick={handleSwapTokens}
-              className="p-3 rounded-full border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50 transition-colors mb-[2px]"
-              disabled={!sourceToken || !targetToken}
-            >
-              <ArrowLeftRight className="w-5 h-5 text-gray-600" />
-            </button>
-          </div>
+          {/* Mobile Layout */}
+          <div className="md:hidden space-y-4">
+            {/* Source Token */}
+            <div className="w-full">
+              <VirtualizedTokenSelector
+                selectedToken={sourceToken}
+                onTokenSelect={handleSourceTokenSelect}
+                label="Source Token"
+                excludeToken={targetToken}
+              />
+            </div>
 
-          {/* Target Token */}
-          <div className="flex-1">
-            <VirtualizedTokenSelector
-              selectedToken={targetToken}
-              onTokenSelect={handleTargetTokenSelect}
-              label="Target Token"
-              excludeToken={sourceToken}
-            />
+            {/* Swap Button - Centered */}
+            <div className="flex justify-center">
+              <button
+                onClick={handleSwapTokens}
+                className="p-3 rounded-full border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50 transition-colors"
+                disabled={!sourceToken || !targetToken}
+              >
+                <ArrowUpDown className="w-5 h-5 text-gray-600" />
+              </button>
+            </div>
+
+            {/* Target Token */}
+            <div className="w-full">
+              <VirtualizedTokenSelector
+                selectedToken={targetToken}
+                onTokenSelect={handleTargetTokenSelect}
+                label="Target Token"
+                excludeToken={sourceToken}
+              />
+            </div>
           </div>
         </div>
 
