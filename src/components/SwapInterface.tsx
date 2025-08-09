@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback, memo } from 'react';
 import { ArrowLeftRight, ArrowUpDown, Loader2 } from 'lucide-react';
 import { VirtualizedTokenSelector } from './VirtualizedTokenSelector';
+import { SelectedTokenDisplay } from './SelectedTokenDisplay';
 import { SkeletonCard, SkeletonSpinner } from './Skeleton';
 import { Token } from '../types';
 import { useImprovedSwapCalculation, formatTokenAmount } from '../hooks/useImprovedSwapCalculation';
@@ -117,11 +118,6 @@ export const SwapInterface = () => {
     setUsdAmount(e.target.value);
   }, []);
 
-  const formatNumber = (num: number, decimals: number = 6): string => {
-    if (num === 0) return '0';
-    if (num < 0.000001) return '< 0.000001';
-    return num.toFixed(decimals).replace(/\.?0+$/, '');
-  };
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4 sm:px-6">
@@ -223,6 +219,26 @@ export const SwapInterface = () => {
             </div>
           </div>
         </div>
+
+        {/* Selected Token Details */}
+        {(sourceToken || targetToken) && (
+          <div className="mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {sourceToken && (
+                <SelectedTokenDisplay 
+                  selectedToken={sourceToken} 
+                  title="Source Token Details" 
+                />
+              )}
+              {targetToken && (
+                <SelectedTokenDisplay 
+                  selectedToken={targetToken} 
+                  title="Target Token Details" 
+                />
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Results */}
         <SwapPreview

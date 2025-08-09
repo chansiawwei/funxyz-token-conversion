@@ -15,7 +15,7 @@ function App() {
             <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
           </div>
           
-          <div className="flex-1 py-8 px-4 relative z-10">
+          <div className="flex-1 py-8 px-4 relative z-10 mb-12">
             <div className="max-w-7xl mx-auto">
               {/* Header with theme toggle */}
               <div className="flex justify-between items-center mb-8">
@@ -64,7 +64,7 @@ function App() {
                     </svg>
                   </div>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-12">
                   Built with React and powered by Funkit API
                 </p>
                 <div className="flex justify-center space-x-4 text-xs text-gray-400 dark:text-gray-500">

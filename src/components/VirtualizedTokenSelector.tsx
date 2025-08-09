@@ -113,6 +113,7 @@ export const VirtualizedTokenSelector = ({
       !(token.address === excludeToken.address && token.chainId === excludeToken.chainId)
     );
   }, [allTokens, excludeToken]);
+  console.log("🚀 ~ VirtualizedTokenSelector ~ allFilteredTokens:", isLoading)
 
   // Use visible tokens for display, but filter out excluded token
   const tokens = useMemo(() => {
@@ -280,7 +281,7 @@ export const VirtualizedTokenSelector = ({
                 <div className="px-4 py-8 text-center text-red-500 dark:text-red-400">
                   Error loading tokens. Please try again.
                 </div>
-              ) : tokens.length === 0 ? (
+              ) : allFilteredTokens.length === 0 ? (
                 <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                   {networkFilter 
                     ? 'No tokens available for selected network'
