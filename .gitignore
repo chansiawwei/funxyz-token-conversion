@@ -32,6 +32,7 @@ dist-ssr
 
 # Build outputs
 build/
+storybook-static/
 
 # Coverage directory used by tools like istanbul
 coverage/
