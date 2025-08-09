@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { TOKEN_CONFIGS, TOKEN_ICONS, Token, SUPPORTED_CHAINS } from '../types';
 import { getAssetErc20ByChainAndSymbol } from '@funkit/api-base';
 
@@ -131,6 +131,11 @@ export const useVirtualizedTokensByNetwork = (chainId: number | null, pageSize: 
 export const useVirtualScrollTokens = (chainId: number | null) => {
   const [visibleRange, setVisibleRange] = useState({ start: 0, end: 3 });
   const pageSize = 3;
+  
+  // Reset visible range when network filter changes
+  useEffect(() => {
+    setVisibleRange({ start: 0, end: 3 });
+  }, [chainId]);
   
   const {
     tokens,

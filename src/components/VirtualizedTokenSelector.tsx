@@ -122,6 +122,8 @@ export const VirtualizedTokenSelector = ({
     );
   }, [visibleTokens, excludeToken]);
 
+
+
   const handleNetworkFilterChange = useCallback((chainId: number | null) => {
     setNetworkFilter(chainId);
     // Clear selection if it doesn't match the new filter
@@ -228,6 +230,8 @@ export const VirtualizedTokenSelector = ({
         </Listbox>
       </div>
 
+
+
       {/* Token Selector */}
       <Listbox value={selectedToken} onChange={onTokenSelect}>
         <div className="relative">
@@ -266,7 +270,7 @@ export const VirtualizedTokenSelector = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute z-10 mt-1 w-full max-w-full overflow-hidden rounded-md bg-white dark:bg-gray-700 text-base shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none sm:text-sm left-0 right-0">
+            <Listbox.Options modal={false} className="absolute z-[9999] mt-1 w-full max-h-80 overflow-auto rounded-md bg-white dark:bg-gray-700 text-base shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none sm:text-sm">
               {isLoading ? (
                 <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                   <SkeletonSpinner className="mx-auto mb-2" />
