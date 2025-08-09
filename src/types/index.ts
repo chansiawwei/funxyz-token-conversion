@@ -5,6 +5,7 @@ export interface Token {
   address?: string;
   decimals?: number;
   logoURI?: string;
+  chainName?: string;
 }
 
 export interface TokenPrice {
@@ -27,33 +28,48 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
-export const SUPPORTED_TOKENS: Token[] = [
-  {
-    symbol: 'USDC',
-    name: 'USD Coin',
-    chainId: '1',
-    address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    decimals: 6,
-  },
-  {
-    symbol: 'USDT',
-    name: 'Tether USD',
-    chainId: '1',
-    address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    decimals: 6,
-  },
-  {
-    symbol: 'ETH',
-    name: 'Ethereum',
-    chainId: '1',
-    address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-    decimals: 18,
-  },
-  {
-    symbol: 'WBTC',
-    name: 'Wrapped Bitcoin',
-    chainId: '1',
-    address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-    decimals: 8,
-  },
-];
+export interface Chain {
+  id: number;
+  name: string;
+  symbol: string;
+}
+
+// Token configurations organized by chain ID - symbols only, addresses fetched from API
+export const TOKEN_CONFIGS: Record<number, string[]> = {
+  1: ['USDC', 'WBTC'], // Ethereum Mainnet
+  137: ['USDT'], // Polygon
+  8453: ['ETH'], // Base
+};
+
+// Token icon mapping using jsDelivr CDN for cryptocurrency icons
+export const TOKEN_ICONS: Record<string, string> = {
+  // Major cryptocurrencies
+  'ETH': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/eth.svg',
+  'WETH': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/eth.svg',
+  'BTC': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/btc.svg',
+  'WBTC': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/btc.svg',
+  
+  // Stablecoins
+  'USDC': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/usdc.svg',
+  'USDT': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/usdt.svg',
+  'DAI': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/dai.svg',
+  
+  // DeFi tokens
+  'UNI': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/uni.svg',
+  'AAVE': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/aave.svg',
+  'LINK': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/link.svg',
+  
+  // Chain-specific tokens
+  'MATIC': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/matic.svg',
+  'ARB': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/arb.svg',
+  'OP': 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/op.svg',
+};
+
+// Chain information
+export const SUPPORTED_CHAINS = [
+  { id: 1, name: 'Ethereum', symbol: 'ETH' },
+  { id: 137, name: 'Polygon', symbol: 'MATIC' },
+  { id: 8453, name: 'Base', symbol: 'ETH' },
+] as const;
+
+export const SUPPORTED_TOKENS: Token[] = [];

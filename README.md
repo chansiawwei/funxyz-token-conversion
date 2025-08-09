@@ -8,22 +8,28 @@ A React-based web application that allows users to explore potential crypto toke
 
 ## 📋 Features
 
-- **Token Selection**: Choose from supported tokens (USDC, USDT, ETH, WBTC)
+- **Chain-First Selection**: Users select network first, then available tokens
+- **Multi-chain Support**: Supports tokens across Ethereum, Polygon, and Base networks
 - **Real-time Price Calculation**: Get live token prices using the Funkit API
 - **USD-based Conversion**: Enter a USD amount to see equivalent token values
 - **Swap Preview**: Visual representation of token swap calculations
-- **Responsive Design**: Modern, mobile-friendly interface
+- **Responsive Design**: Modern, mobile-friendly interface with sticky footer
+- **Virtualized Token Selection**: Efficient rendering of large token lists with pagination
+- **Dynamic Token Fetching**: Token information fetched from Funkit API in real-time
 - **Error Handling**: Graceful handling of API errors and edge cases
 - **Loading States**: Visual feedback during API calls
+- **Improved UX**: Enhanced token selector with intuitive icons and visual cues
 
 ## 🛠️ Tech Stack
 
 - **Frontend Framework**: React 18 with TypeScript
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS
-- **Icons**: Lucide React
+- **Icons**: Lucide React + Heroicons
+- **Component Library**: Headless UI (for accessible select components)
 - **API**: @funkit/api-base package
-- **State Management**: React hooks (useState, useEffect)
+- **State Management**: React Query for server state, React hooks for local state
+- **Data Fetching**: React Query with caching and error handling
 
 ## 📦 Installation
 
@@ -70,16 +76,21 @@ npm run preview
 
 ## 🔧 Configuration
 
-### Supported Tokens
+### Supported Networks and Tokens
 
-The application currently supports these tokens:
+The application supports multiple networks with tokens dynamically fetched from the Funkit API:
 
-| Token | Name | Chain ID |
-|-------|------|----------|
-| USDC | USD Coin | 1 |
-| USDT | Tether USD | 137 |
-| ETH | Ethereum | 8453 |
-| WBTC | Wrapped Bitcoin | 1 |
+#### Ethereum Mainnet (Chain ID: 1)
+- **USDC** - USD Coin
+- **WBTC** - Wrapped Bitcoin
+
+#### Polygon (Chain ID: 137)
+- **USDT** - Tether USD
+
+#### Base (Chain ID: 8453)
+- **ETH** - Ethereum
+
+*Token addresses, decimals, and names are fetched dynamically from the Funkit API using `getAssetErc20ByChainAndSymbol`. Users must first select a network, then choose from available tokens on that network.*
 
 ### API Configuration
 
@@ -96,21 +107,30 @@ The application uses the Funkit API with the provided development API key. The A
 ```
 src/
 ├── components/
-│   ├── SwapInterface.tsx    # Main swap interface component
-│   └── TokenSelector.tsx    # Token selection dropdown
+│   ├── SwapInterface.tsx           # Main swap interface component
+│   ├── VirtualizedTokenSelector.tsx # Virtualized token selection with pagination
+│   └── ChainSelector.tsx           # Network/chain selection component
+├── hooks/
+│   ├── useVirtualizedTokens.ts     # Custom hooks for virtualized token management
+│   └── useImprovedSwapCalculation.ts # Enhanced swap calculation logic
 ├── services/
-│   └── api.ts              # API service layer
+│   └── api.ts                      # API service layer
 ├── types/
-│   └── index.ts            # TypeScript type definitions
-├── App.tsx                 # Main application component
-├── main.tsx               # Application entry point
-└── index.css              # Global styles and Tailwind imports
+│   └── index.ts                    # TypeScript type definitions
+├── lib/
+│   └── queryClient.ts              # React Query configuration
+├── App.tsx                         # Main application component with sticky footer
+├── main.tsx                       # Application entry point
+└── index.css                      # Global styles and Tailwind imports
 ```
 
 ### Key Components
 
 - **SwapInterface**: Main component handling swap logic and state management
-- **TokenSelector**: Reusable dropdown component for token selection
+- **VirtualizedTokenSelector**: Efficient virtualized token selection with pagination and search
+- **ChainSelector**: Network selection component for multi-chain support
+- **useVirtualizedTokens**: Custom hooks for managing virtualized token lists and pagination
+- **useImprovedSwapCalculation**: Enhanced hook for swap calculations with React Query
 - **TokenApiService**: Singleton service for API interactions with caching
 
 ## 🎨 Design Decisions
@@ -126,9 +146,18 @@ src/
 
 - **TypeScript**: For type safety and better developer experience
 - **Vite**: Fast build tool with excellent development experience
-- **Tailwind CSS**: Utility-first CSS framework for rapid styling
+- **Tailwind CSS**: Utility-first CSS framework for rapid styling with flexbox layout
+- **Headless UI**: Accessible, unstyled UI components for better UX
+- **React Query**: Powerful data fetching with caching, background updates, and error handling
+- **Virtualization**: Efficient rendering of large token lists using react-window for performance
+- **Sticky Footer**: CSS flexbox layout ensuring footer stays at bottom of viewport
+- **Chain-First Architecture**: Network selection drives available token options
+- **Dynamic Token Fetching**: Uses `useTokenInfo` hook and `getAssetErc20ByChainAndSymbol` API
+- **Real-time Token Data**: Addresses, decimals, and names fetched from Funkit API
+- **Multi-Chain Support**: Supports tokens across different blockchain networks
 - **Service Layer**: Abstracted API logic for maintainability
-- **Caching Strategy**: Client-side caching to improve performance
+- **Caching Strategy**: Intelligent caching with React Query for optimal performance
+- **Custom Hooks**: Modular hook architecture for reusable logic and state management
 
 ## 🔍 Assumptions Made
 
