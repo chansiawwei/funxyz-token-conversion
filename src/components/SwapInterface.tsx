@@ -21,31 +21,31 @@ const SwapPreview = memo(({ swapResult, isLoading, error, sourceToken, targetTok
   // Skeleton loader when both tokens selected, USD amount is entered, but no result yet
   if (sourceToken && targetToken && usdAmountNumber > 0 && (isLoading || !swapResult) && !error) {
     return (
-      <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-3">
         <div className="flex items-center space-x-2">
-          <div className="h-5 bg-gray-200 rounded animate-pulse w-24"></div>
-          {isLoading && <Loader2 className="w-4 h-4 animate-spin text-gray-400" />}
+          <div className="h-5 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-24"></div>
+          {isLoading && <Loader2 className="w-4 h-4 animate-spin text-gray-400 dark:text-gray-500" />}
         </div>
         
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <div className="h-4 bg-gray-200 rounded animate-pulse w-20"></div>
-            <div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-20"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-16"></div>
           </div>
           
           <div className="flex justify-between items-center">
-            <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
-            <div className="h-4 bg-gray-200 rounded animate-pulse w-20"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-24"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-20"></div>
           </div>
           
           <div className="flex justify-between items-center">
-            <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
-            <div className="h-4 bg-gray-200 rounded animate-pulse w-20"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-24"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-20"></div>
           </div>
         </div>
         
-        <div className="pt-2 border-t border-gray-200">
-          <div className="h-3 bg-gray-200 rounded animate-pulse w-3/4"></div>
+        <div className="pt-2 border-t border-gray-200 dark:border-gray-600">
+          <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-3/4"></div>
         </div>
       </div>
     );
@@ -54,8 +54,8 @@ const SwapPreview = memo(({ swapResult, isLoading, error, sourceToken, targetTok
   // Error state
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-        <p className="text-red-700 text-sm">{error.message || 'An error occurred'}</p>
+      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
+        <p className="text-red-700 dark:text-red-400 text-sm">{error.message || 'An error occurred'}</p>
       </div>
     );
   }
@@ -63,32 +63,32 @@ const SwapPreview = memo(({ swapResult, isLoading, error, sourceToken, targetTok
   // Swap result
   if (swapResult && !isLoading && !error) {
     return (
-      <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-        <h3 className="font-medium text-gray-900">Swap Preview</h3>
+      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-3">
+        <h3 className="font-medium text-gray-900 dark:text-white">Swap Preview</h3>
         
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">USD Amount:</span>
-            <span className="font-medium">${formatNumber(swapResult.usdAmount, 2)}</span>
+            <span className="text-gray-600 dark:text-gray-300">USD Amount:</span>
+            <span className="font-medium text-gray-900 dark:text-white">${formatNumber(swapResult.usdAmount, 2)}</span>
           </div>
           
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">{swapResult.sourceToken.symbol} Amount:</span>
-            <span className="font-medium">
+            <span className="text-gray-600 dark:text-gray-300">{swapResult.sourceToken.symbol} Amount:</span>
+            <span className="font-medium text-gray-900 dark:text-white">
               {formatNumber(swapResult.sourceAmount)} {swapResult.sourceToken.symbol}
             </span>
           </div>
           
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">{swapResult.targetToken.symbol} Amount:</span>
-            <span className="font-medium">
+            <span className="text-gray-600 dark:text-gray-300">{swapResult.targetToken.symbol} Amount:</span>
+            <span className="font-medium text-gray-900 dark:text-white">
               {formatNumber(swapResult.targetAmount)} {swapResult.targetToken.symbol}
             </span>
           </div>
         </div>
         
-        <div className="pt-2 border-t border-gray-200">
-          <p className="text-xs text-gray-500">
+        <div className="pt-2 border-t border-gray-200 dark:border-gray-600">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             Prices are approximate and may vary. This is for informational purposes only.
           </p>
         </div>
@@ -143,21 +143,21 @@ export const SwapInterface: React.FC = () => {
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4 sm:px-6">
-      <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 md:p-8 transition-colors duration-200">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Token Swap</h2>
-          <p className="text-gray-600">Enter a USD amount to see equivalent token values</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Token Swap</h2>
+          <p className="text-gray-600 dark:text-gray-300">Enter a USD amount to see equivalent token values</p>
         </div>
 
 
 
         {/* USD Amount Input */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             USD Amount
           </label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium">
               $
             </span>
             <input
@@ -165,7 +165,7 @@ export const SwapInterface: React.FC = () => {
               value={usdAmount}
               onChange={handleUsdAmountChange}
               placeholder="0.00"
-              className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg min-w-0"
+              className="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg min-w-0 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               min="0"
               step="0.01"
             />
@@ -190,10 +190,10 @@ export const SwapInterface: React.FC = () => {
             <div className="flex justify-center items-end">
               <button
                 onClick={handleSwapTokens}
-                className="p-3 rounded-full border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50 transition-colors mb-[2px]"
+                className="p-3 rounded-full border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors mb-[2px]"
                 disabled={!sourceToken || !targetToken}
               >
-                <ArrowLeftRight className="w-5 h-5 text-gray-600" />
+                <ArrowLeftRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
               </button>
             </div>
 
@@ -224,10 +224,10 @@ export const SwapInterface: React.FC = () => {
             <div className="flex justify-center">
               <button
                 onClick={handleSwapTokens}
-                className="p-3 rounded-full border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50 transition-colors"
+                className="p-3 rounded-full border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                 disabled={!sourceToken || !targetToken}
               >
-                <ArrowUpDown className="w-5 h-5 text-gray-600" />
+                <ArrowUpDown className="w-5 h-5 text-gray-600 dark:text-gray-300" />
               </button>
             </div>
 

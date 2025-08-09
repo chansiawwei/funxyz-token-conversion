@@ -28,7 +28,7 @@ const TokenItem = React.memo(({ index, style, data }: {
 
   if (!token) {
     return (
-      <div style={style} className="px-4 py-2 text-gray-500">
+      <div style={style} className="px-4 py-2 text-gray-500 dark:text-gray-400">
         Loading...
       </div>
     );
@@ -44,7 +44,7 @@ const TokenItem = React.memo(({ index, style, data }: {
       style={style}
       className={({ active }) =>
         `relative cursor-default select-none py-2 pl-10 pr-4 ${
-          active ? 'bg-blue-100 text-blue-900' : 'text-gray-900'
+          active ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100' : 'text-gray-900 dark:text-white'
         }`
       }
       onClick={() => onSelect(token)}
@@ -65,14 +65,14 @@ const TokenItem = React.memo(({ index, style, data }: {
               }`}>
                 {token.symbol}
               </span>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 dark:text-gray-400">
                 {token.name} • {token.chainName}
               </span>
             </div>
           </div>
           {(selected || isSelected) && (
             <span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-              active ? 'text-blue-600' : 'text-blue-600'
+              active ? 'text-blue-600 dark:text-blue-400' : 'text-blue-600 dark:text-blue-400'
             }`}>
               <CheckIcon className="h-5 w-5" aria-hidden="true" />
             </span>
@@ -147,7 +147,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
 
   return (
     <div className="w-full">
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         {label}
       </label>
       
@@ -155,15 +155,15 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
       <div className="mb-3">
         <Listbox value={networkFilter} onChange={handleNetworkFilterChange}>
           <div className="relative">
-            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm border border-gray-300 min-w-0">
-              <span className="block truncate">
+            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white dark:bg-gray-700 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm border border-gray-300 dark:border-gray-600 min-w-0">
+              <span className="block truncate text-gray-900 dark:text-white">
                 {networkFilter 
                   ? SUPPORTED_CHAINS.find(chain => chain.id === networkFilter)?.name || 'Unknown Network'
                   : 'All Networks'
                 }
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                <ChevronUpDownIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
               </span>
             </Listbox.Button>
             <Transition
@@ -171,12 +171,12 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none sm:text-sm">
                 <Listbox.Option
                   value={null}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? 'bg-blue-100 text-blue-900' : 'text-gray-900'
+                      active ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100' : 'text-gray-900 dark:text-white'
                     }`
                   }
                 >
@@ -188,7 +188,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
                         All Networks
                       </span>
                       {selected && (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600 dark:text-blue-400">
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>
                       )}
@@ -201,7 +201,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
                     value={chain.id}
                     className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                        active ? 'bg-blue-100 text-blue-900' : 'text-gray-900'
+                        active ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100' : 'text-gray-900 dark:text-white'
                       }`
                     }
                   >
@@ -213,7 +213,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
                           {chain.name}
                         </span>
                         {selected && (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600 dark:text-blue-400">
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />
                           </span>
                         )}
@@ -230,7 +230,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
       {/* Token Selector */}
       <Listbox value={selectedToken} onChange={onTokenSelect}>
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm border border-gray-300 min-h-[76px] flex items-center min-w-0">
+          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white dark:bg-gray-700 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm border border-gray-300 dark:border-gray-600 min-h-[76px] flex items-center min-w-0">
             {selectedToken ? (
               <div className="flex items-center w-full">
                 {selectedToken.logoURI && (
@@ -241,22 +241,22 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
                   />
                 )}
                 <div className="flex flex-col min-w-0 flex-1">
-                  <span className="block truncate font-medium">
+                  <span className="block truncate font-medium text-gray-900 dark:text-white">
                     {selectedToken.symbol}
                   </span>
-                  <span className="block truncate text-sm text-gray-500">
+                  <span className="block truncate text-sm text-gray-500 dark:text-gray-400">
                     {selectedToken.name} • {selectedToken.chainName}
                   </span>
                 </div>
               </div>
             ) : (
               <div className="flex items-center justify-center w-full h-full">
-                <CursorArrowRaysIcon className="h-5 w-5 text-gray-400 mr-1.5" />
-                <span className="text-gray-500">{placeholder}</span>
+                <CursorArrowRaysIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-1.5" />
+                <span className="text-gray-500 dark:text-gray-400">{placeholder}</span>
               </div>
             )}
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+              <ChevronUpDownIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
             </span>
           </Listbox.Button>
 
@@ -265,18 +265,18 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute z-10 mt-1 w-full max-w-full overflow-hidden rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm left-0 right-0">
+            <Listbox.Options className="absolute z-10 mt-1 w-full max-w-full overflow-hidden rounded-md bg-white dark:bg-gray-700 text-base shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none sm:text-sm left-0 right-0">
               {isLoading ? (
-                <div className="px-4 py-8 text-center text-gray-500">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2"></div>
                   Loading tokens...
                 </div>
               ) : hasError ? (
-                <div className="px-4 py-8 text-center text-red-500">
+                <div className="px-4 py-8 text-center text-red-500 dark:text-red-400">
                   Error loading tokens. Please try again.
                 </div>
               ) : tokens.length === 0 ? (
-                <div className="px-4 py-8 text-center text-gray-500">
+                <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                   {networkFilter 
                     ? 'No tokens available for selected network'
                     : 'No tokens available'
@@ -301,17 +301,17 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
                   
                   {/* Loading indicator for next page */}
                   {isFetchingNextPage && (
-                    <div className="px-4 py-2 text-center text-gray-500 border-t">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mx-auto"></div>
+                    <div className="px-4 py-2 text-center text-gray-500 dark:text-gray-400 border-t dark:border-gray-600">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
                     </div>
                   )}
                   
                   {/* Load more button if needed */}
                   {hasNextPage && !isFetchingNextPage && (
-                    <div className="px-4 py-2 border-t">
+                    <div className="px-4 py-2 border-t dark:border-gray-600">
                       <button
                         onClick={() => fetchNextPage()}
-                        className="w-full text-sm text-blue-600 hover:text-blue-800 font-medium"
+                        className="w-full text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
                       >
                         Load more tokens...
                       </button>
@@ -322,7 +322,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
               
               {/* Token count info */}
               {allFilteredTokens.length > 0 && (
-                <div className="px-4 py-2 text-xs text-gray-400 border-t bg-gray-50">
+                <div className="px-4 py-2 text-xs text-gray-400 dark:text-gray-500 border-t dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
                   Showing {allFilteredTokens.length} token{allFilteredTokens.length !== 1 ? 's' : ''}
                   {networkFilter && ` on ${SUPPORTED_CHAINS.find(c => c.id === networkFilter)?.name}`}
                 </div>
