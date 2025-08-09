@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback, memo } from 'react';
 import { ArrowLeftRight, ArrowUpDown, Loader2 } from 'lucide-react';
 import { VirtualizedTokenSelector } from './VirtualizedTokenSelector';
+import { SkeletonCard, SkeletonSpinner } from './Skeleton';
 import { Token } from '../types';
 import { useImprovedSwapCalculation, formatTokenAmount } from '../hooks/useImprovedSwapCalculation';
 
@@ -21,32 +22,13 @@ const SwapPreview = memo(({ swapResult, isLoading, error, sourceToken, targetTok
   // Skeleton loader when both tokens selected, USD amount is entered, but no result yet
   if (sourceToken && targetToken && usdAmountNumber > 0 && (isLoading || !swapResult) && !error) {
     return (
-      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-3">
-        <div className="flex items-center space-x-2">
-          <div className="h-5 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-24"></div>
-          {isLoading && <Loader2 className="w-4 h-4 animate-spin text-gray-400 dark:text-gray-500" />}
-        </div>
-        
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-20"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-16"></div>
+      <div className="relative">
+        <SkeletonCard />
+        {isLoading && (
+          <div className="absolute top-4 right-4">
+            <SkeletonSpinner size="sm" />
           </div>
-          
-          <div className="flex justify-between items-center">
-            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-24"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-20"></div>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-24"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-20"></div>
-          </div>
-        </div>
-        
-        <div className="pt-2 border-t border-gray-200 dark:border-gray-600">
-          <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded animate-pulse w-3/4"></div>
-        </div>
+        )}
       </div>
     );
   }
@@ -99,7 +81,7 @@ const SwapPreview = memo(({ swapResult, isLoading, error, sourceToken, targetTok
   return null;
 });
 
-export const SwapInterface: React.FC = () => {
+export const SwapInterface = () => {
   const [sourceToken, setSourceToken] = useState<Token | null>(null);
   const [targetToken, setTargetToken] = useState<Token | null>(null);
   const [usdAmount, setUsdAmount] = useState<string>('');

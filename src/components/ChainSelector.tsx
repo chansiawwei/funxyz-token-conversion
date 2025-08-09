@@ -9,11 +9,11 @@ interface ChainSelectorProps {
   className?: string;
 }
 
-export const ChainSelector: React.FC<ChainSelectorProps> = ({
+export const ChainSelector = ({
   selectedChain,
   onChainSelect,
-  className = '',
-}) => {
+  className = ''
+}: ChainSelectorProps) => {
   return (
     <div className={`relative ${className}`}>
       <Listbox value={selectedChain} onChange={onChainSelect}>

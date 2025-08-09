@@ -3,6 +3,7 @@ import { Listbox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon, CheckIcon, CursorArrowRaysIcon } from '@heroicons/react/20/solid';
 import { FixedSizeList as List } from 'react-window';
 import { useVirtualScrollTokens } from '../hooks/useVirtualizedTokens';
+import { SkeletonSpinner, SkeletonText } from './Skeleton';
 import { Token, SUPPORTED_CHAINS } from '../types';
 
 interface VirtualizedTokenSelectorProps {
@@ -28,8 +29,8 @@ const TokenItem = React.memo(({ index, style, data }: {
 
   if (!token) {
     return (
-      <div style={style} className="px-4 py-2 text-gray-500 dark:text-gray-400">
-        Loading...
+      <div style={style} className="px-4 py-2">
+        <SkeletonText lines={2} />
       </div>
     );
   }
@@ -85,13 +86,13 @@ const TokenItem = React.memo(({ index, style, data }: {
 
 TokenItem.displayName = 'TokenItem';
 
-export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> = ({
+export const VirtualizedTokenSelector = ({
   selectedToken,
   onTokenSelect,
   label,
   placeholder = "Select a token",
   excludeToken
-}) => {
+}: VirtualizedTokenSelectorProps) => {
   const [networkFilter, setNetworkFilter] = useState<number | null>(null);
   
   const {
@@ -268,7 +269,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
             <Listbox.Options className="absolute z-10 mt-1 w-full max-w-full overflow-hidden rounded-md bg-white dark:bg-gray-700 text-base shadow-lg ring-1 ring-black dark:ring-gray-600 ring-opacity-5 focus:outline-none sm:text-sm left-0 right-0">
               {isLoading ? (
                 <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-2"></div>
+                  <SkeletonSpinner className="mx-auto mb-2" />
                   Loading tokens...
                 </div>
               ) : hasError ? (
@@ -302,7 +303,7 @@ export const VirtualizedTokenSelector: React.FC<VirtualizedTokenSelectorProps> =
                   {/* Loading indicator for next page */}
                   {isFetchingNextPage && (
                     <div className="px-4 py-2 text-center text-gray-500 dark:text-gray-400 border-t dark:border-gray-600">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
+                      <SkeletonSpinner size="sm" className="mx-auto" />
                     </div>
                   )}
                   
