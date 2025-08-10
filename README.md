@@ -3,8 +3,10 @@
 A React-based web application that allows users to explore potential crypto token explorer by entering a USD amount and selecting two tokens to see their equivalent values.
 
 ## 🚀 Live Demo
-
 **Preview URL**: [https://funxyz-token-conversion.vercel.app/](https://funxyz-token-conversion.vercel.app/)
+
+**Preview Storybook URL**: [https://funxyz-token-conversion.vercel.app/storybook/?path=/docs](https://funxyz-token-conversion.vercel.app/)
+
 
 ## 📋 Features
 
@@ -70,14 +72,29 @@ npm run preview
 
 This project includes Storybook for component development, testing, and documentation.
 
-### Quick Start
+### 🖥️ Local Development
 
 ```bash
 # Start Storybook development server (requires Node.js 20+)
 npm run storybook
+# or with pnpm
+pnpm storybook
+```
 
+This will start Storybook at `http://localhost:6006` 
+
+### 🏗️ Build & Deploy
+
+```bash
 # Build Storybook for production
 npm run build-storybook
+# or with pnpm
+pnpm build-storybook
+```
+
+### 🌐 Production Access
+- Automatically deployed with the main application
+- Accessible under the `/storybook` path on the same domain
 ```
 ## 🚀 Deployment
 
