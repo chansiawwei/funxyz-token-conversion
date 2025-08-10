@@ -1,11 +1,13 @@
 {
   "version": 2,
+  "name": "crypto-swap-storybook",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist",
+        "buildCommand": "pnpm build-storybook",
+        "distDir": "storybook-static",
         "nodeVersion": "22.x",
         "installCommand": "pnpm install"
       }
@@ -14,14 +16,6 @@
   "routes": [
     {
       "handle": "filesystem"
-    },
-    {
-      "src": "/storybook/(.*)",
-      "dest": "/storybook/$1"
-    },
-    {
-      "src": "/storybook",
-      "dest": "/storybook/index.html"
     },
     {
       "src": "/(.*)",

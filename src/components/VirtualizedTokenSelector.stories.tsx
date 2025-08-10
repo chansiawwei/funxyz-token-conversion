@@ -229,7 +229,7 @@ const VirtualizationDemo: React.FC = () => {
         <h3 className="text-lg font-semibold mb-2">Virtualization Performance Test</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400">
           This demo uses {mockTokens.length} mock tokens to showcase virtualization. 
-          The component efficiently renders only visible items for optimal performance.
+          The component dynamically renders only visible items for optimal performance.
         </p>
       </div>
       
@@ -243,13 +243,11 @@ const VirtualizationDemo: React.FC = () => {
       
       <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
         <p className="text-sm text-green-800 dark:text-green-200">
-          <span className="font-medium">💡 Mock Data Benefits:</span>
+          <span className="font-medium">💡 Mock Data:</span>
         </p>
         <ul className="text-xs text-green-700 dark:text-green-300 mt-1 space-y-1">
           <li>• Generated {mockTokens.length} tokens for testing</li>
-          <li>• Demonstrates search and filtering capabilities</li>
           <li>• Shows component behavior with large datasets</li>
-          <li>• No API calls needed for development/testing</li>
         </ul>
       </div>
     </div>
@@ -278,23 +276,6 @@ export const WithSelectedToken: Story = {
     },
     label: 'Source Token',
     placeholder: 'Select source token...',
-  },
-};
-
-export const WithExcludedToken: Story = {
-  args: {
-    selectedToken: null,
-    label: 'Target Token',
-    placeholder: 'Select target token...',
-    excludeToken: {
-      symbol: 'USDT',
-      address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-      name: 'Tether USD',
-      decimals: 6,
-      chainId: '1',
-      chainName: 'Ethereum',
-      logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
-    },
   },
 };
 

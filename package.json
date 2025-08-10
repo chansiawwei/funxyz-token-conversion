@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "dev:storybook": "concurrently \"vite\" \"storybook dev -p 6006\"",
+    "build": "vite build && pnpm build-storybook && mkdir -p dist/storybook && cp -r storybook-static/* dist/storybook/",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "deploy-storybook": "./deploy-storybook.sh"
   },
   "dependencies": {
     "@funkit/api-base": "^1.0.0",
@@ -35,6 +37,7 @@
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.14",
+    "concurrently": "^9.2.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
