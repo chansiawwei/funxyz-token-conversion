@@ -13,6 +13,8 @@ interface VirtualizedTokenSelectorProps {
   label: string;
   placeholder?: string;
   excludeToken?: Token | null;
+  networkFilter?: number | null;
+  onNetworkFilterChange?: (chainId: number | null) => void;
 }
 
 // Individual token item component for virtual list
@@ -23,9 +25,14 @@ export const VirtualizedTokenSelector = ({
   onTokenSelect,
   label,
   placeholder = "Select a token",
-  excludeToken
+  excludeToken,
+  networkFilter: externalNetworkFilter,
+  onNetworkFilterChange
 }: VirtualizedTokenSelectorProps) => {
-  const [networkFilter, setNetworkFilter] = useState<number | null>(null);
+  const [internalNetworkFilter, setInternalNetworkFilter] = useState<number | null>(null);
+  
+  // Use external network filter if provided, otherwise use internal state
+  const networkFilter = externalNetworkFilter !== undefined ? externalNetworkFilter : internalNetworkFilter;
   
   const {
     tokens: allTokens,
@@ -47,12 +54,16 @@ export const VirtualizedTokenSelector = ({
   }, [allTokens, excludeToken]);
 
   const handleNetworkFilterChange = useCallback((chainId: number | null) => {
-    setNetworkFilter(chainId);
+    if (onNetworkFilterChange) {
+      onNetworkFilterChange(chainId);
+    } else {
+      setInternalNetworkFilter(chainId);
+    }
     // Clear selection if it doesn't match the new filter
     if (chainId && selectedToken && parseInt(selectedToken.chainId) !== chainId) {
       onTokenSelect(null);
     }
-  }, [selectedToken, onTokenSelect]);
+  }, [selectedToken, onTokenSelect, onNetworkFilterChange]);
 
   const handleTokenSelect = useCallback((token: Token) => {
     onTokenSelect(token);
