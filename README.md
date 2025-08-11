@@ -28,6 +28,7 @@ A React-based web application that allows users to explore potential crypto toke
 - **Request Cache**: Request are automatically cached with react-query
 - **Dark Mode**: Theme switching capability
 - **URL State Persistence**: Share specific token combinations via URL parameters
+- **Short Polling**: Auto polling every 60s or manual refresh
 
 
 ## 🛠️ Tech Stack
@@ -118,10 +119,10 @@ pnpm build-storybook
 
 ## 🔍 Assumptions Made
 
-**Price Accuracy**: Assuming API prices are updated frequently, thus Short Polling every minute
-**Chain Support**: Limited to the specified chains for each token
-**User Intent**: Users want to see approximate values, not execute actual swaps
-**Future support of huge dataset**: virtualization on the list is being done to future proof huge dataset 
+-**Price Accuracy**: Assuming API prices are updated frequently, thus Short Polling every minute
+-**Chain Support**: Limited to the specified chains for each token
+-**User Intent**: Users want to see approximate values, not execute actual swaps
+-**Future support of huge dataset**: virtualization on the list is being done to future proof huge dataset 
 
 ## 🚨 Known Limitations
 
