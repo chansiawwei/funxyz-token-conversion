@@ -3,8 +3,9 @@ import { ArrowLeftRight, ArrowUpDown, RefreshCw } from 'lucide-react';
 import { VirtualizedTokenSelector } from './VirtualizedTokenSelector';
 import { SelectedTokenDisplay } from './SelectedTokenDisplay';
 import { SkeletonCard, SkeletonSpinner } from './Skeleton';
-import { Token, TOKEN_ICONS, SUPPORTED_CHAINS } from '../types';
+import { Token, TOKEN_ICONS, SUPPORTED_CHAINS, TOKEN_CONFIGS } from '../types';
 import { useImprovedSwapCalculation, formatTokenAmount } from '../hooks/useImprovedSwapCalculation';
+import { tokenApiService } from '../services/api';
 
 // Memoized SwapPreview component to prevent unnecessary rerenders
 const SwapPreview = memo(({ swapResult, isLoading, error, sourceToken, targetToken, usdAmountNumber }: {
@@ -18,6 +19,12 @@ const SwapPreview = memo(({ swapResult, isLoading, error, sourceToken, targetTok
   // Use the improved formatting function
   const formatNumber = (num: number, decimals: number = 6): string => {
     return formatTokenAmount(num, decimals);
+  };
+
+  // Format token amount with proper decimals
+  const formatTokenAmountWithDecimals = (amount: number, token: Token): string => {
+    const decimals = token.decimals || 6;
+    return formatTokenAmount(amount, decimals);
   };
 
   // Skeleton loader when loading (including refresh)
@@ -65,14 +72,14 @@ const SwapPreview = memo(({ swapResult, isLoading, error, sourceToken, targetTok
           <div className="flex justify-between items-center">
             <span className="text-gray-600 dark:text-gray-300">{swapResult.sourceToken.symbol} Amount:</span>
             <span className="font-medium text-gray-900 dark:text-white">
-              {formatNumber(swapResult.sourceAmount)} {swapResult.sourceToken.symbol}
+              {formatTokenAmountWithDecimals(swapResult.sourceAmount, swapResult.sourceToken)} {swapResult.sourceToken.symbol}
             </span>
           </div>
           
           <div className="flex justify-between items-center">
             <span className="text-gray-600 dark:text-gray-300">{swapResult.targetToken.symbol} Amount:</span>
             <span className="font-medium text-gray-900 dark:text-white">
-              {formatNumber(swapResult.targetAmount)} {swapResult.targetToken.symbol}
+              {formatTokenAmountWithDecimals(swapResult.targetAmount, swapResult.targetToken)} {swapResult.targetToken.symbol}
             </span>
           </div>
         </div>
@@ -99,26 +106,37 @@ export const SwapInterface = () => {
   // URL parameter handling functions
   const serializeToken = (token: Token | null): string => {
     if (!token) return '';
-    return `${token.symbol}:${token.chainId}:${token.address || ''}`;
+    return token.symbol.toLowerCase();
   };
 
   const deserializeToken = (tokenStr: string): Token | null => {
     if (!tokenStr) return null;
-    const [symbol, chainId, address] = tokenStr.split(':');
-    if (!symbol || !chainId) return null;
+    const symbol = tokenStr.toUpperCase();
     
-    // Find chain name from SUPPORTED_CHAINS
-    const chain = SUPPORTED_CHAINS.find(c => c.id === parseInt(chainId));
-    const chainName = chain ? chain.name : `Chain ${chainId}`;
+    // Find the first chain that supports this symbol
+    for (const chain of SUPPORTED_CHAINS) {
+      const supportedSymbols = TOKEN_CONFIGS[chain.id];
+      if (supportedSymbols && supportedSymbols.includes(symbol)) {
+        return {
+          symbol,
+          chainId: chain.id.toString(),
+          name: symbol, // Will be updated when token is loaded
+          logoURI: TOKEN_ICONS[symbol], // Add logo from TOKEN_ICONS
+          chainName: chain.name,
+        };
+      }
+    }
     
-    return {
-      symbol,
-      chainId,
-      address: address || undefined,
-      name: symbol, // Will be updated when token is loaded
-      logoURI: TOKEN_ICONS[symbol], // Add logo from TOKEN_ICONS
-      chainName, // Add chain name
-    };
+    return null; // Symbol not found in any supported chain
+  };
+
+  // USD amount validation function
+  const validateUsdAmount = (amount: string): string => {
+    if (!amount) return '';
+    const numValue = parseFloat(amount);
+    if (isNaN(numValue) || numValue < 0) return '';
+    if (numValue > 100000000000) return '100000000000'; // Cap at 100 billion
+    return amount;
   };
 
   const updateURL = useCallback((newUsdAmount: string, newSourceToken: Token | null, newTargetToken: Token | null) => {
@@ -155,30 +173,70 @@ export const SwapInterface = () => {
 
   // Load state from URL on component mount
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    
-    const amountParam = params.get('amount');
-    const fromParam = params.get('from');
-    const toParam = params.get('to');
-    
-    if (amountParam) {
-      setUsdAmount(amountParam);
-    }
-    
-    if (fromParam) {
-      const token = deserializeToken(fromParam);
-      if (token) {
-        setSourceToken(token);
+    const loadTokensFromUrl = async () => {
+      const url = new URL(window.location.href);
+      const params = new URLSearchParams(url.search);
+      
+      const amountParam = params.get('amount');
+      const fromParam = params.get('from');
+      const toParam = params.get('to');
+      
+      // Validate and set USD amount
+      if (amountParam) {
+        const validatedAmount = validateUsdAmount(amountParam);
+        setUsdAmount(validatedAmount);
       }
-    }
-    
-    if (toParam) {
-      const token = deserializeToken(toParam);
-      if (token) {
-        setTargetToken(token);
+      
+      // Validate and set source token with complete info
+      if (fromParam) {
+        const basicToken = deserializeToken(fromParam);
+        if (basicToken) {
+          try {
+            const tokenInfoResponse = await tokenApiService.getTokenInfo(basicToken.chainId, basicToken.symbol);
+            if (tokenInfoResponse.success) {
+              const completeToken = {
+                ...basicToken,
+                ...tokenInfoResponse.data,
+                logoURI: basicToken.logoURI, // Keep the icon from TOKEN_ICONS
+                chainName: basicToken.chainName, // Keep the chain name
+              };
+              setSourceToken(completeToken);
+            } else {
+              setSourceToken(basicToken); // Fallback to basic token if API fails
+            }
+          } catch (error) {
+            console.error('Error loading source token info:', error);
+            setSourceToken(basicToken); // Fallback to basic token if API fails
+          }
+        }
       }
-    }
+      
+      // Validate and set target token with complete info
+      if (toParam) {
+        const basicToken = deserializeToken(toParam);
+        if (basicToken) {
+          try {
+            const tokenInfoResponse = await tokenApiService.getTokenInfo(basicToken.chainId, basicToken.symbol);
+            if (tokenInfoResponse.success) {
+              const completeToken = {
+                ...basicToken,
+                ...tokenInfoResponse.data,
+                logoURI: basicToken.logoURI, // Keep the icon from TOKEN_ICONS
+                chainName: basicToken.chainName, // Keep the chain name
+              };
+              setTargetToken(completeToken);
+            } else {
+              setTargetToken(basicToken); // Fallback to basic token if API fails
+            }
+          } catch (error) {
+            console.error('Error loading target token info:', error);
+            setTargetToken(basicToken); // Fallback to basic token if API fails
+          }
+        }
+      }
+    };
+    
+    loadTokensFromUrl();
   }, []);
 
   // Update URL when state changes

@@ -10,17 +10,25 @@ A React-based web application that allows users to explore potential crypto toke
 
 ## 📋 Features
 
-- **Chain-First Selection**: Users select network first, then available tokens
-- **Multi-chain Support**: Supports tokens across Ethereum, Polygon, and Base networks
-- **Real-time Price Calculation**: Get live token prices using the Funkit API
 - **USD-based Conversion**: Enter a USD amount to see equivalent token values
+- **Real-time Price Calculation**: Get live token prices using the Funkit API
 - **Swap Preview**: Visual representation of token price calculations
-- **Responsive Design**: Modern, mobile-friendly interface with sticky footer
-- **Virtualized Token Selection**: Efficient rendering of large token lists with pagination
-- **Dynamic Token Fetching**: Token information fetched from Funkit API in real-time
-- **Error Handling**: Graceful handling of API errors and edge cases
-- **Loading States**: Visual feedback during API calls
-- **Improved UX**: Enhanced token selector with intuitive icons and visual cues
+
+## 🎯 Usage
+
+1. **Enter USD Amount**: Input the USD value you want to convert
+2. **Select Source Token**: Choose the token you want to convert from
+3. **Select Target Token**: Choose the token you want to convert to
+4. **View Results**: See the equivalent amounts in both tokens
+
+## 📋 Enhancement and Addons
+- **Responsive Design**: Mobile-friendly interface
+- **Virtualized Token Selection**: Efficient rendering of large token lists with pagination, Check the storybook for example
+- **Loading States**: Skeleton Loader and spinner for loading states
+- **Request Cache**: Request are automatically cached with react-query
+- **Dark Mode**: Theme switching capability
+- **URL State Persistence**: Share specific token combinations via URL parameters
+
 
 ## 🛠️ Tech Stack
 
@@ -65,12 +73,11 @@ A React-based web application that allows users to explore potential crypto toke
 
 ```bash
 npm run build
-npm run preview
 ```
 
 ## 📚 Storybook
 
-This project includes Storybook for component development, testing, and documentation.
+This project includes Storybook for component development and documentation.
 
 ### 🖥️ Local Development
 
@@ -95,25 +102,9 @@ pnpm build-storybook
 ### 🌐 Production Access
 - Automatically deployed with the main application
 - Accessible under the `/storybook` path on the same domain
-```
-## 🚀 Deployment
 
 ### Deploy to Vercel
 
-This project is configured for seamless deployment on Vercel with the following setup:
-
-#### Prerequisites
-- Vercel CLI installed: `npm i -g vercel`
-- GitHub repository connected to Vercel
-
-#### Manual Deployment
-
-1. **Install dependencies with pnpm**
-   ```bash
-   pnpm install
-   ```
-
-2. **Deploy to Vercel**
    ```bash
    vercel --prod
    ```
@@ -122,106 +113,15 @@ This project is configured for seamless deployment on Vercel with the following 
 
 - **Production**: Automatically deploys from `main` branch
 
-## 🎯 Usage
 
-1. **Enter USD Amount**: Input the USD value you want to convert
-2. **Select Source Token**: Choose the token you want to convert from
-3. **Select Target Token**: Choose the token you want to convert to
-4. **View Results**: See the equivalent amounts in both tokens
-5. **Swap Tokens**: Use the swap button to quickly reverse the token selection
 
-## 🔧 Configuration
-
-### Supported Networks and Tokens
-
-The application supports multiple networks with tokens dynamically fetched from the Funkit API:
-
-#### Ethereum Mainnet (Chain ID: 1)
-- **USDC** - USD Coin
-- **WBTC** - Wrapped Bitcoin
-
-#### Polygon (Chain ID: 137)
-- **USDT** - Tether USD
-
-#### Base (Chain ID: 8453)
-- **ETH** - Ethereum
-
-*Token addresses, decimals, and names are fetched dynamically from the Funkit API using `getAssetErc20ByChainAndSymbol`. Users must first select a network, then choose from available tokens on that network.*
-
-### API Configuration
-
-The application uses the Funkit API with the provided development API key. The API service includes:
-
-- **Caching**: 5-minute cache for token prices to reduce API calls
-- **Error Handling**: Graceful fallbacks for API failures
-- **Rate Limiting**: Built-in request management
-
-## 🏛️ Architecture
-
-### Project Structure
-
-```
-src/
-├── components/
-│   ├── SwapInterface.tsx           # Main swap interface component
-│   ├── VirtualizedTokenSelector.tsx # Virtualized token selection with pagination
-│   └── ChainSelector.tsx           # Network/chain selection component
-├── hooks/
-│   ├── useVirtualizedTokens.ts     # Custom hooks for virtualized token management
-│   └── useImprovedSwapCalculation.ts # Enhanced swap calculation logic
-├── services/
-│   └── api.ts                      # API service layer
-├── types/
-│   └── index.ts                    # TypeScript type definitions
-├── lib/
-│   └── queryClient.ts              # React Query configuration
-├── App.tsx                         # Main application component with sticky footer
-├── main.tsx                       # Application entry point
-└── index.css                      # Global styles and Tailwind imports
-```
-
-### Key Components
-
-- **SwapInterface**: Main component handling swap logic and state management
-- **VirtualizedTokenSelector**: Efficient virtualized token selection with pagination and search
-- **ChainSelector**: Network selection component for multi-chain support
-- **useVirtualizedTokens**: Custom hooks for managing virtualized token lists and pagination
-- **useImprovedSwapCalculation**: Enhanced hook for swap calculations with React Query
-- **TokenApiService**: Singleton service for API interactions with caching
-
-## 🎨 Design Decisions
-
-### UI/UX Choices
-
-- **Clean, Modern Interface**: Minimalist design focusing on usability
-- **Visual Feedback**: Loading states and error messages for better UX
-- **Responsive Layout**: Mobile-first approach with Tailwind CSS
-- **Accessibility**: Proper ARIA labels and keyboard navigation
-
-### Technical Decisions
-
-- **TypeScript**: For type safety and better developer experience
-- **Vite**: Fast build tool with excellent development experience
-- **Tailwind CSS**: Utility-first CSS framework for rapid styling with flexbox layout
-- **Headless UI**: Accessible, unstyled UI components for better UX
-- **React Query**: Powerful data fetching with caching, background updates, and error handling
-- **Virtualization**: Efficient rendering of large token lists using react-window for performance
-- **Sticky Footer**: CSS flexbox layout ensuring footer stays at bottom of viewport
-- **Chain-First Architecture**: Network selection drives available token options
-- **Dynamic Token Fetching**: Uses `useTokenInfo` hook and `getAssetErc20ByChainAndSymbol` API
-- **Real-time Token Data**: Addresses, decimals, and names fetched from Funkit API
-- **Multi-Chain Support**: Supports tokens across different blockchain networks
-- **Service Layer**: Abstracted API logic for maintainability
-- **Caching Strategy**: Intelligent caching with React Query for optimal performance
-- **Custom Hooks**: Modular hook architecture for reusable logic and state management
 
 ## 🔍 Assumptions Made
 
-1. **Token Addresses**: For tokens without explicit addresses (like ETH), using placeholder addresses
-2. **Price Accuracy**: Assuming API prices are reasonably current (5-minute cache)
-3. **Chain Support**: Limited to the specified chains for each token
-4. **Error Handling**: Graceful degradation when API calls fail
-5. **User Intent**: Users want to see approximate values, not execute actual swaps
+**Price Accuracy**: Assuming API prices are updated frequently, thus Short Polling every minute
+**Chain Support**: Limited to the specified chains for each token
+**User Intent**: Users want to see approximate values, not execute actual swaps
+**Future support of huge data list**: virtualization on the list is being done to future proof huge data list 
 
 ## 🚨 Known Limitations
 
@@ -230,30 +130,8 @@ src/
 - **API Dependency**: Relies on external API availability
 - **Price Accuracy**: Prices are approximate and may not reflect real-time market conditions
 
-## 🔮 Future Enhancements
-
-- **More Tokens**: Expand the supported token list
-- **Multiple Chains**: Support for more blockchain networks
-- **Price Charts**: Historical price data visualization
-- **Slippage Calculation**: More accurate swap estimations
-- **Dark Mode**: Theme switching capability
-- **Favorites**: Save frequently used token pairs
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
-- Funkit API for providing the token data and pricing information
-- React team for the excellent framework
-- Tailwind CSS for the utility-first styling approach
-- Lucide React for the beautiful icons
+- This Project is made by @Chansiawwei for FunXYZ assessment only
+- Some codes written is generated by Chatgpt
