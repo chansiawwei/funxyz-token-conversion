@@ -121,7 +121,7 @@ pnpm build-storybook
 **Price Accuracy**: Assuming API prices are updated frequently, thus Short Polling every minute
 **Chain Support**: Limited to the specified chains for each token
 **User Intent**: Users want to see approximate values, not execute actual swaps
-**Future support of huge data list**: virtualization on the list is being done to future proof huge data list 
+**Future support of huge dataset**: virtualization on the list is being done to future proof huge dataset 
 
 ## 🚨 Known Limitations
 
