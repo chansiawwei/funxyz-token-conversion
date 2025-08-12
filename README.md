@@ -24,6 +24,7 @@ A React-based web application that allows users to explore potential crypto toke
 ## 📋 Enhancement and Addons
 - **Responsive Design**: Mobile-friendly interface
 - **Virtualized Token Selection**: Efficient rendering of large token lists with pagination, Check the storybook for example
+- **Lazy LoadiLng**: There is 4 tokens in total, first 3 is being fetch and the 3rd onwards is fetch after selector is opened
 - **Loading States**: Skeleton Loader and spinner for loading states
 - **Request Cache**: Request are automatically cached with react-query
 - **Dark Mode**: Theme switching capability

@@ -1,0 +1,2 @@
+// API Configuration
+export const API_KEY = 'Z9SZaOwpmE40KX61mUKWm5hrpGh7WHVkaTvQJpQk';

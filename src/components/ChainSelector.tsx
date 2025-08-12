@@ -1,4 +1,3 @@
-import React from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon, CheckIcon } from '@heroicons/react/20/solid';
 import { SUPPORTED_CHAINS, Chain } from '../types';

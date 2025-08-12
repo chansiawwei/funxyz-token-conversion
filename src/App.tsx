@@ -54,7 +54,7 @@ function App() {
           </div>
 
           {/* Enhanced Footer */}
-          <footer className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl border-t border-white/20 dark:border-gray-700/50 py-8 relative z-10">
+          <footer className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl border-t border-white/20 dark:border-gray-700/50 py-8 relative z-10 mt-20">
             <div className="max-w-7xl mx-auto px-4">
               <div className="text-center">
                 <div className="flex justify-center items-center space-x-2 mb-3">

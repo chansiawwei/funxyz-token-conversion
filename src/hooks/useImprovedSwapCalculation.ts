@@ -1,16 +1,16 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getAssetPriceInfo } from '@funkit/api-base';
-import type { Token, TokenPrice, SwapCalculation } from '../types';
-
-const API_KEY = 'Z9SZaOwpmE40KX61mUKWm5hrpGh7WHVkaTvQJpQk';
+import type { Token } from '../types';
+import { API_KEY } from '../constants';
 
 /**
- * Hook to fetch token prices with optimized caching and auto-refresh
+ * Simplified hook for swap calculation with optimized caching and auto-refresh
  */
-const useTokenPrices = (
+export const useImprovedSwapCalculation = (
   sourceToken: Token | null,
-  targetToken: Token | null
+  targetToken: Token | null,
+  usdAmount: number
 ) => {
   const queryClient = useQueryClient();
   const [countdown, setCountdown] = useState(60);
@@ -25,7 +25,7 @@ const useTokenPrices = (
         if (prev <= 1) {
           // Invalidate and refetch when countdown reaches 0
           queryClient.invalidateQueries({
-            queryKey: ['tokenPrices', sourceToken?.address, sourceToken?.chainId, targetToken?.address, targetToken?.chainId]
+            queryKey: ['swapCalculation', sourceToken?.address, sourceToken?.chainId, targetToken?.address, targetToken?.chainId, usdAmount]
           });
           return 60; // Reset countdown
         }
@@ -34,13 +34,13 @@ const useTokenPrices = (
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isEnabled, sourceToken?.address, sourceToken?.chainId, targetToken?.address, targetToken?.chainId, queryClient]);
+  }, [isEnabled, sourceToken?.address, sourceToken?.chainId, targetToken?.address, targetToken?.chainId, usdAmount, queryClient]);
 
   const query = useQuery({
-    queryKey: ['tokenPrices', sourceToken?.address, sourceToken?.chainId, targetToken?.address, targetToken?.chainId],
+    queryKey: ['swapCalculation', sourceToken?.address, sourceToken?.chainId, targetToken?.address, targetToken?.chainId, usdAmount],
     queryFn: async () => {
-      if (!sourceToken || !targetToken) {
-        throw new Error('Missing required tokens for swap calculation');
+      if (!sourceToken || !targetToken || usdAmount <= 0 || !isFinite(usdAmount)) {
+        throw new Error('Missing required tokens or invalid USD amount for swap calculation');
       }
 
       // Get token addresses, using placeholder for native tokens
@@ -82,14 +82,32 @@ const useTokenPrices = (
         throw new Error(`Invalid price for ${targetToken.symbol}: ${targetPrice}`);
       }
 
+      // Calculate token amounts based on USD value
+      const sourceAmount = usdAmount / sourcePrice;
+      const targetAmount = usdAmount / targetPrice;
+
+      // Validate calculated amounts
+      if (!isFinite(sourceAmount) || !isFinite(targetAmount)) {
+        throw new Error('Invalid calculated amounts');
+      }
+
+      // Apply proper decimal precision based on token decimals or default to 6
+      const sourceDecimals = sourceToken.decimals || 6;
+      const targetDecimals = targetToken.decimals || 6;
+      
+      // Use Math.round for better precision than toFixed
+      const roundedSourceAmount = Math.round(sourceAmount * Math.pow(10, sourceDecimals)) / Math.pow(10, sourceDecimals);
+      const roundedTargetAmount = Math.round(targetAmount * Math.pow(10, targetDecimals)) / Math.pow(10, targetDecimals);
+
       return {
-        sourcePrice,
-        targetPrice,
+        sourceAmount: roundedSourceAmount,
+        targetAmount: roundedTargetAmount,
         sourceToken,
         targetToken,
+        usdAmount,
       };
     },
-    enabled: isEnabled,
+    enabled: isEnabled && usdAmount > 0 && isFinite(usdAmount),
     staleTime: 60 * 1000, // Refresh every 60 seconds
     gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
     retry: (failureCount, error) => {
@@ -112,79 +130,11 @@ const useTokenPrices = (
   };
 
   return {
-    ...query,
+    data: query.data,
+    isLoading: query.isFetching,
+    error: query.error,
+    isError: query.isError,
     countdown,
     manualRefresh,
   };
-};
-
-/**
- * Improved hook for swap calculation with optimized caching
- */
-export const useImprovedSwapCalculation = (
-  sourceToken: Token | null,
-  targetToken: Token | null,
-  usdAmount: number
-) => {
-  // Fetch prices (cached separately)
-  const pricesQuery = useTokenPrices(sourceToken, targetToken);
-  
-  // Calculate amounts using cached prices
-  const swapResult = useMemo(() => {
-    if (!pricesQuery.data || !sourceToken || !targetToken || usdAmount <= 0 || !isFinite(usdAmount)) {
-      return null;
-    }
-
-    const { sourcePrice, targetPrice } = pricesQuery.data;
-    
-    // Calculate token amounts based on USD value
-    const sourceAmount = usdAmount / sourcePrice;
-    const targetAmount = usdAmount / targetPrice;
-
-    // Validate calculated amounts
-    if (!isFinite(sourceAmount) || !isFinite(targetAmount)) {
-      return null;
-    }
-
-    // Apply proper decimal precision based on token decimals or default to 6
-    const sourceDecimals = sourceToken.decimals || 6;
-    const targetDecimals = targetToken.decimals || 6;
-    
-    // Use Math.round for better precision than toFixed
-    const roundedSourceAmount = Math.round(sourceAmount * Math.pow(10, sourceDecimals)) / Math.pow(10, sourceDecimals);
-    const roundedTargetAmount = Math.round(targetAmount * Math.pow(10, targetDecimals)) / Math.pow(10, targetDecimals);
-
-    return {
-      sourceAmount: roundedSourceAmount,
-      targetAmount: roundedTargetAmount,
-      sourceToken,
-      targetToken,
-      usdAmount,
-    };
-  }, [pricesQuery.data, sourceToken, targetToken, usdAmount]);
-
-  return {
-    data: swapResult,
-    isLoading: pricesQuery.isFetching,
-    error: pricesQuery.error,
-    isError: pricesQuery.isError,
-    countdown: pricesQuery.countdown,
-    manualRefresh: pricesQuery.manualRefresh,
-  };
-};
-
-/**
- * Helper function to format numbers with appropriate precision
- */
-export const formatTokenAmount = (amount: number, decimals: number = 6): string => {
-  if (amount === 0) return '0';
-  if (amount < Math.pow(10, -decimals)) return `< ${Math.pow(10, -decimals)}`;
-  
-  // Use significant digits for very small numbers
-  if (amount < 0.01) {
-    return amount.toPrecision(3);
-  }
-  
-  // Use fixed decimals for larger numbers, removing trailing zeros
-  return amount.toFixed(Math.min(decimals, 6)).replace(/\.?0+$/, '');
 };
