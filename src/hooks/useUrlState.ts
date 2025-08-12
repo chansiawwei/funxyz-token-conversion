@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Token } from '../types';
 import { useTokenInfo } from './useTokenInfo';
 import { SUPPORTED_CHAINS, TOKEN_CONFIGS, TOKEN_ICONS } from '../types';
@@ -87,6 +87,7 @@ export const useUrlState = (): UrlStateHook => {
     targetToken: null,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const hasInitialized = useRef(false);
   
   const { fetchTokenInfo } = useTokenInfo();
 
@@ -132,6 +133,7 @@ export const useUrlState = (): UrlStateHook => {
         }
         
         setState(newState);
+        hasInitialized.current = true;
       } catch (error) {
         console.error('Failed to load state from URL:', error);
       } finally {
@@ -142,48 +144,42 @@ export const useUrlState = (): UrlStateHook => {
     loadFromUrl();
   }, [fetchTokenInfo]);
 
-  // Update URL when state changes
-  const syncToUrl = useCallback((newState: UrlState) => {
+  // Sync URL when state changes (but not during initial load)
+  useEffect(() => {
+    if (!hasInitialized.current || isLoading) return;
+    
     const params = getUrlParams();
-    
-    setUrlParam(params, URL_PARAMS.AMOUNT, newState.usdAmount);
-    setUrlParam(params, URL_PARAMS.FROM, serializeToken(newState.sourceToken));
-    setUrlParam(params, URL_PARAMS.TO, serializeToken(newState.targetToken));
-    
+    setUrlParam(params, URL_PARAMS.AMOUNT, state.usdAmount);
+    setUrlParam(params, URL_PARAMS.FROM, serializeToken(state.sourceToken));
+    setUrlParam(params, URL_PARAMS.TO, serializeToken(state.targetToken));
     updateUrl(params);
-  }, []);
+  }, [state.usdAmount, state.sourceToken, state.targetToken, isLoading]);
 
   // State update functions
   const updateUsdAmount = useCallback((amount: string) => {
     const validatedAmount = validateUsdAmount(amount);
-    const newState = { ...state, usdAmount: validatedAmount };
-    setState(newState);
-    syncToUrl(newState);
-  }, [state, syncToUrl]);
+    setState(prevState => ({ ...prevState, usdAmount: validatedAmount }));
+  }, []);
 
   const updateSourceToken = useCallback((token: Token | null) => {
-    const newState = { ...state, sourceToken: token };
-    setState(newState);
-    syncToUrl(newState);
-  }, [state, syncToUrl]);
+    setState(prevState => ({ ...prevState, sourceToken: token }));
+  }, []);
 
   const updateTargetToken = useCallback((token: Token | null) => {
-    const newState = { ...state, targetToken: token };
-    setState(newState);
-    syncToUrl(newState);
-  }, [state, syncToUrl]);
+    setState(prevState => ({ ...prevState, targetToken: token }));
+  }, []);
 
   const swapTokens = useCallback(() => {
-    if (!state.sourceToken || !state.targetToken) return;
-    
-    const newState = {
-      ...state,
-      sourceToken: state.targetToken,
-      targetToken: state.sourceToken,
-    };
-    setState(newState);
-    syncToUrl(newState);
-  }, [state, syncToUrl]);
+    setState(prevState => {
+      if (!prevState.sourceToken || !prevState.targetToken) return prevState;
+      
+      return {
+        ...prevState,
+        sourceToken: prevState.targetToken,
+        targetToken: prevState.sourceToken,
+      };
+    });
+  }, []);
 
   return {
     ...state,

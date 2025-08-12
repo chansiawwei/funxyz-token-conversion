@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
 import { getAssetErc20ByChainAndSymbol } from '@funkit/api-base';
 import type { Token } from '../types';
 import { API_KEY } from '../constants';
@@ -41,7 +42,7 @@ export const useTokenInfo = (chainId?: string, symbol?: string, enabled: boolean
   });
 
   // Imperative fetch function using the same query configuration
-  const fetchTokenInfo = async (basicToken: Token): Promise<Token> => {
+  const fetchTokenInfo = useCallback(async (basicToken: Token): Promise<Token> => {
     try {
       const response = await queryClient.fetchQuery({
         queryKey: ['tokenInfo', basicToken.chainId, basicToken.symbol],
@@ -78,7 +79,7 @@ export const useTokenInfo = (chainId?: string, symbol?: string, enabled: boolean
       console.error(`Error loading token info for ${basicToken.symbol} on ${basicToken.chainName}:`, error);
       return basicToken;
     }
-  };
+  }, [queryClient]);
 
   return {
     ...query,
